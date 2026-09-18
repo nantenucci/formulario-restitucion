@@ -124,7 +124,12 @@
     background:transparent;
     padding:1px 0;
   }
-  textarea{ resize:none; }
+  textarea{
+    resize:none;
+    overflow:hidden;
+    display:block;
+    line-height:1.3;
+  }
 
   .note{
     font-size:8.5px;
@@ -208,7 +213,7 @@
     white-space:nowrap;
   }
 
-  .obs-box textarea{ height:70px; }
+  .obs-box textarea{ min-height:90px; }
 
   .firma-cell{
     text-align:center;
@@ -285,10 +290,10 @@
       </tr>
       <tr>
         <td><span class="lbl">Fecha del secuestro</span><input type="date" data-f="fechaSecuestro"></td>
-        <td colspan="2"><span class="lbl">Comisaría o fuerza interviniente</span><input type="text" data-f="comisaria"></td>
+        <td colspan="2"><span class="lbl">Comisaría o fuerza interviniente</span><textarea class="autogrow" rows="1" data-f="comisaria"></textarea></td>
       </tr>
       <tr>
-        <td colspan="3"><span class="lbl">Dirección donde se produjo el secuestro</span><input type="text" data-f="direccion"></td>
+        <td colspan="3"><span class="lbl">Dirección donde se produjo el secuestro</span><textarea class="autogrow" rows="1" data-f="direccion"></textarea></td>
       </tr>
     </table>
 
@@ -390,7 +395,7 @@
           <strong>Documentación</strong>
         </td>
         <td>
-          <div class="subrow"><span class="lbl">Descripción:</span><input type="text" data-f="doc_descripcion"></div>
+          <div class="subrow"><span class="lbl">Descripción:</span><textarea class="autogrow" rows="1" data-f="doc_descripcion"></textarea></div>
         </td>
         <td class="pedido-col">
           <label class="chk"><input type="radio" name="car_doc" data-f="car_documentacion" value="Propietario"><span class="box"></span> Propietario</label>
@@ -405,7 +410,7 @@
           <strong>Otros</strong>
         </td>
         <td>
-          <input type="text" data-f="otros_descripcion">
+          <textarea class="autogrow" rows="1" data-f="otros_descripcion"></textarea>
         </td>
         <td class="pedido-col">
           <label class="chk"><input type="radio" name="car_otros" data-f="car_otros" value="Propietario"><span class="box"></span> Propietario</label>
@@ -479,6 +484,15 @@
   const fields = document.querySelectorAll('[data-f]');
   const statusEl = document.getElementById('status');
 
+  function autoGrow(el){
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+  document.querySelectorAll('textarea').forEach(t=>{
+    autoGrow(t);
+    t.addEventListener('input', ()=>autoGrow(t));
+  });
+
   function save(){
     const data = {};
     fields.forEach(el=>{
@@ -517,8 +531,15 @@
   });
 
   load();
+  document.querySelectorAll('textarea').forEach(autoGrow);
 
-  document.getElementById('btnImprimir').addEventListener('click', ()=>window.print());
+  document.getElementById('btnImprimir').addEventListener('click', ()=>{
+    document.querySelectorAll('textarea').forEach(autoGrow);
+    window.print();
+  });
+  window.addEventListener('beforeprint', ()=>{
+    document.querySelectorAll('textarea').forEach(autoGrow);
+  });
 
   document.getElementById('btnNuevo').addEventListener('click', ()=>{
     if(!confirm('¿Vaciar todos los campos del formulario?')) return;
@@ -527,6 +548,7 @@
       if(el.type === 'checkbox' || el.type === 'radio') el.checked = false;
       else el.value = '';
     });
+    document.querySelectorAll('textarea').forEach(autoGrow);
     statusEl.textContent = 'Formulario vacío';
   });
 })();
