@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario Devolución de Efectos - MPA</title>
+<style>
+  :root{
+    --line:#000;
+    --bg-app:#eef0f2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:var(--bg-app);
+    margin:0;
+    padding:0;
+    color:#111;
+  }
+  .toolbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:#1c2b3a;
+    color:#fff;
+    padding:10px 16px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .toolbar h1{
+    font-size:14px;
+    margin:0;
+    margin-right:auto;
+    font-weight:600;
+  }
+  .toolbar button{
+    background:#c9a24a;
+    color:#1c2b3a;
+    border:none;
+    padding:8px 14px;
+    border-radius:4px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .toolbar button.secondary{
+    background:transparent;
+    color:#fff;
+    border:1px solid #6b7c8d;
+  }
+  .toolbar button:hover{ opacity:0.9; }
+  .status{
+    font-size:12px;
+    color:#b7c2cd;
+  }
+
+  .doc-wrap{
+    padding:24px 0 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:24px;
+  }
+
+  .page{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    box-shadow:0 0 8px rgba(0,0,0,0.25);
+    padding:12mm;
+    position:relative;
+  }
+
+  .header-block{ text-align:center; margin-bottom:10px; }
+  .header-block .h1{ font-weight:bold; font-size:13px; margin:0; }
+  .header-block .h2{ font-weight:bold; font-size:12px; margin:0 0 10px; }
+  .header-block .h3{ font-weight:bold; font-size:15px; text-decoration:underline; margin:10px 0 14px; }
+
+  .logo-mpa{
+    position:absolute;
+    top:12mm;
+    left:12mm;
+    width:110px;
+    height:auto;
+  }
+
+  table.doc{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:6px;
+  }
+  table.doc td, table.doc th{
+    border:1px solid var(--line);
+    padding:3px 5px;
+    vertical-align:top;
+    font-size:9.5px;
+  }
+  table.doc th{
+    font-weight:bold;
+    text-align:center;
+    background:#f2f2f2;
+    font-size:9.5px;
+  }
+  .lbl{
+    display:block;
+    font-weight:bold;
+    font-size:8.5px;
+    text-transform:uppercase;
+    margin-bottom:2px;
+  }
+  .lbl-center{
+    text-align:center;
+    font-weight:bold;
+    font-size:9px;
+    text-transform:uppercase;
+  }
+  input[type=text], input[type=date], input[type=number], textarea{
+    width:100%;
+    border:none;
+    outline:none;
+    font-family:inherit;
+    font-size:10.5px;
+    background:transparent;
+    padding:1px 0;
+  }
+  textarea{ resize:none; }
+
+  .note{
+    font-size:8.5px;
+    margin:4px 0 8px;
+    line-height:1.3;
+  }
+
+  .subblock{
+    padding-bottom:3px;
+    margin-bottom:3px;
+  }
+  .subblock + .subblock{
+    border-top:1px dashed #999;
+    padding-top:4px;
+  }
+  .subblock label.lbl{ display:inline-block; width:60px; }
+  .subrow{ display:flex; align-items:center; gap:4px; margin-bottom:1px; }
+  .subrow .lbl{ width:72px; margin-bottom:0; flex-shrink:0; white-space:nowrap; font-size:8px; }
+  .subrow input{ flex:1; min-width:0; }
+
+  .elemento-cell{ display:flex; align-items:flex-start; gap:4px; }
+
+  .chk{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:9px;
+    cursor:pointer;
+    margin-bottom:2px;
+    user-select:none;
+  }
+  .chk input{ position:absolute; opacity:0; width:0; height:0; }
+  .chk .box{
+    width:10px;
+    height:10px;
+    border:1px solid #000;
+    flex-shrink:0;
+    display:inline-block;
+    position:relative;
+  }
+  .chk input:checked + .box::after{
+    content:'\2713';
+    position:absolute;
+    left:0px;
+    top:-4px;
+    font-size:10px;
+    line-height:10px;
+  }
+  .chk-static{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:9px;
+    margin-bottom:2px;
+  }
+  .chk-static .box{
+    width:10px;
+    height:10px;
+    border:1px solid #000;
+    display:inline-block;
+  }
+
+  .pedido-col{ min-width:95px; }
+
+  .page-footer{
+    position:absolute;
+    bottom:8mm;
+    right:12mm;
+    font-size:9px;
+  }
+
+  .vehiculo-header{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:10px;
+    padding:4px;
+    width:100%;
+    white-space:nowrap;
+  }
+
+  .obs-box textarea{ height:70px; }
+
+  .firma-cell{
+    text-align:center;
+    padding-top:20px !important;
+  }
+  .firma-line{
+    border-top:1px solid #000;
+    margin-top:22px;
+    padding-top:2px;
+    font-size:8.5px;
+    font-weight:bold;
+    text-align:center;
+  }
+  .firma-cell input{ text-align:center; }
+
+  .registro-interno td{ font-size:9px; }
+
+  @media print{
+    body{ background:#fff; }
+    .toolbar{ display:none !important; }
+    .doc-wrap{ padding:0; gap:0; }
+    .page{
+      box-shadow:none;
+      margin:0;
+      width:auto;
+      min-height:auto;
+      page-break-after:always;
+    }
+    .page:last-child{ page-break-after:auto; }
+    @page{ size:A4; margin:12mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <h1>Formulario Devolución de Efectos — MPA Fiscalía Regional 2ª</h1>
+  <span class="status" id="status"></span>
+  <button class="secondary" id="btnNuevo">Nuevo / Limpiar</button>
+  <button id="btnImprimir">Imprimir / Generar PDF</button>
+</div>
+
+<div class="doc-wrap">
+
+  <!-- PÁGINA 1 -->
+  <div class="page" id="page1">
+    <img class="logo-mpa" alt="MPA" src="data:image/png;base64,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7Ylxye2bxMfR4y2Yr5caiEyIA4AdLcNcCSZc/Vx9EU2rUHelXZlqnfIEuVyEOAA4UHMC83QVzqQ7lruruBFuudwTtV3U4ZyShxAHAF9EnlgfydjmEd0JdE9rrsStuSbxeNFJDkIcAGycmUiXmOh6Rfg8toHu7PNzkURrz4wi7IMIbeAPIQ4AXufDW+sf3r3j7GQregCM3r67zgS6qxPmkhPsHrWYzaj9evN8XHxCHADTOvtyidLhrfREaNSwM4Oj2npSJ6VrwuR9PoJcbH/1bgAAtBZxpar0xGhZllvtv/t3PLOu6+0a+PZ3vSbaT/rBea2O0b396TzRn5U4AKZx9sURNW+bNMGNJdL+GHVSHGmM7+r5so/e4zdqXWYnxAEwvCu3TM42Ycn2JrrIbeuh5XgYe7bUQ19CHABD6vW8WyQmWdeNWgstZfti4Kwe/fq2/R416vm4eDwTB8BQIj7v9tZiQnZnUvXtuZcoz7zUfMZqxAlo7Xp6UhdRaqq0Wv2KVp9Hz8fRnpU4AIYQ4Xm3q1q040morTE5K7FNk8a/tRiHuzXaauWmdS307lfvc1fvz+cPIQ6AtM7eMvl69Q9vrSabNVZiSgWv93YiBLkSq6Klxma7vSda1ffT1e5SY1aynq5o1a+zn9talHbMTogDIJ2rwS3ipCPizxeU/PHpX397ZXslJ817tXMnwP3a5t3tnWlTy+DypFaP9t2Tn1T4dptnS6369evzeonWnhl5Jg6ANCI/73akxwTz7mce/e3233+N8ZkXypRo1/vfnranhLNt+fY3T7Wu+SvPgZ2pqTPbinYbbat+RTufEYMQB8Awskx2er1UpcSke7u9u548Z3UmYLZoT622bLe/J1qYOeNXTWW5lfTb547YrzP8sHtfbqcEIL2ot0y+Xjkn3K9XvTF9us2SbXrax1o1d2eVsrYSL76pVU+9j/0abYjQrzMytHFUVuIASCvjBKJVm0v9bMD7v4+0olCiTaXaU2p8tts6kvVLgbdtHyPsv5Ii1WVLVuT6EOIASCXjJGcEVyffrVeHej9X9Ln9Vs9vtjweSk/WI9ZUCaP264gg196yjlA5AAAAk/BMHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCJCHAAAQCL/D5TXl3odqB/1AAAAAElFTkSuQmCC">
+    <div class="header-block">
+      <p class="h1">MINISTERIO PÚBLICO DE LA ACUSACIÓN</p>
+      <p class="h2">FISCALÍA REGIONAL 2ª CIRCUNSCRIPCIÓN</p>
+      <p class="h3">FORMULARIO DEVOLUCIÓN DE EFECTOS</p>
+    </div>
+
+    <table class="doc">
+      <colgroup><col style="width:25%"><col style="width:37.5%"><col style="width:37.5%"></colgroup>
+      <tr>
+        <td colspan="2"><span class="lbl">Nombre y apellido del solicitante</span><input type="text" data-f="nombre"></td>
+        <td><span class="lbl">N° de trámite (interno)</span><input type="text" data-f="tramite"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><span class="lbl">D.N.I. N.°</span><input type="text" data-f="dni"></td>
+        <td><span class="lbl">Fiscal</span><input type="text" data-f="fiscal"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><span class="lbl">C.U.I.J.</span><input type="text" data-f="cuij"></td>
+      </tr>
+      <tr>
+        <td rowspan="2" style="text-align:center;vertical-align:middle;"><span class="lbl-center">Datos para<br>contactarnos</span></td>
+        <td><span class="lbl">Mail</span><input type="text" data-f="mail"></td>
+        <td><span class="lbl">Tel</span><input type="text" data-f="tel"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><span class="lbl">Whatsapp</span><input type="text" data-f="whatsapp"></td>
+      </tr>
+      <tr>
+        <td><span class="lbl">Fecha del secuestro</span><input type="date" data-f="fechaSecuestro"></td>
+        <td colspan="2"><span class="lbl">Comisaría o fuerza interviniente</span><input type="text" data-f="comisaria"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><span class="lbl">Dirección donde se produjo el secuestro</span><input type="text" data-f="direccion"></td>
+      </tr>
+    </table>
+
+    <p class="note">A continuación deberá detallar los elementos solicitados adjuntando copias de comprobantes de titularidad, en caso de ser un vehículo: título; cédula verde; certificado de 08; seguro y carnet de conducir.</p>
+
+    <table class="doc">
+      <colgroup><col style="width:15%"><col style="width:55%"><col style="width:30%"></colgroup>
+      <tr><th>ELEMENTO</th><th>DESCRIPCIÓN</th><th>PEDIDO EN CARÁCTER DE:</th></tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_celulares"><span class="box"></span></label>
+          <strong>Celulares</strong>
+        </td>
+        <td>
+          <div class="subblock">
+            <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="cel1_marca"></div>
+            <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="cel1_modelo"></div>
+            <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="cel1_imei"></div>
+            <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="cel1_color"></div>
+          </div>
+          <div class="subblock">
+            <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="cel2_marca"></div>
+            <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="cel2_modelo"></div>
+            <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="cel2_imei"></div>
+            <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="cel2_color"></div>
+          </div>
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_cel" data-f="car_celulares" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_cel" data-f="car_celulares" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_cel" data-f="car_celulares" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_tablet"><span class="box"></span></label>
+          <strong>Tablet</strong>
+        </td>
+        <td>
+          <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="tab_marca"></div>
+          <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="tab_modelo"></div>
+          <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="tab_imei"></div>
+          <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="tab_color"></div>
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_tab" data-f="car_tablet" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_tab" data-f="car_tablet" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_tab" data-f="car_tablet" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_pc"><span class="box"></span></label>
+          <strong>Computadoras / Notebook</strong>
+        </td>
+        <td>
+          <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="pc_marca"></div>
+          <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="pc_modelo"></div>
+          <div class="subrow"><span class="lbl">Color:</span><input type="text" data-f="pc_color"></div>
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_pc" data-f="car_pc" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_pc" data-f="car_pc" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_pc" data-f="car_pc" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_dinero"><span class="box"></span></label>
+          <strong>Dinero</strong>
+        </td>
+        <td>
+          <div class="subrow"><span class="lbl">Cantidad:</span><input type="text" data-f="dinero_cantidad"></div>
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_dinero" data-f="car_dinero" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_dinero" data-f="car_dinero" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_dinero" data-f="car_dinero" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+    </table>
+
+    <div class="page-footer">Página 1 de 2</div>
+  </div>
+
+  <!-- PÁGINA 2 -->
+  <div class="page" id="page2">
+    <table class="doc">
+      <colgroup><col style="width:15%"><col style="width:55%"><col style="width:30%"></colgroup>
+      <tr><th>ELEMENTO</th><th>DESCRIPCIÓN</th><th>PEDIDO EN CARÁCTER DE:</th></tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_documentacion"><span class="box"></span></label>
+          <strong>Documentación</strong>
+        </td>
+        <td>
+          <div class="subrow"><span class="lbl">Descripción:</span><input type="text" data-f="doc_descripcion"></div>
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_doc" data-f="car_documentacion" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_doc" data-f="car_documentacion" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_doc" data-f="car_documentacion" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="elemento-cell">
+          <label class="chk"><input type="checkbox" data-f="el_otros"><span class="box"></span></label>
+          <strong>Otros</strong>
+        </td>
+        <td>
+          <input type="text" data-f="otros_descripcion">
+        </td>
+        <td class="pedido-col">
+          <label class="chk"><input type="radio" name="car_otros" data-f="car_otros" value="Propietario"><span class="box"></span> Propietario</label>
+          <label class="chk"><input type="radio" name="car_otros" data-f="car_otros" value="Poseedor de buena fe"><span class="box"></span> Poseedor de buena fe</label>
+          <label class="chk"><input type="radio" name="car_otros" data-f="car_otros" value="Otro"><span class="box"></span> Otro</label>
+        </td>
+      </tr>
+    </table>
+
+    <table class="doc">
+      <tr>
+        <td colspan="4">
+          <div class="vehiculo-header">
+            TIPO DE VEHÍCULO:
+            <label class="chk"><input type="radio" name="tipoveh" data-f="veh_tipo" value="AUTO"><span class="box"></span> AUTO</label>
+            <label class="chk"><input type="radio" name="tipoveh" data-f="veh_tipo" value="MOTO"><span class="box"></span> MOTO</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:25%"><span class="lbl">Patente</span><input type="text" data-f="veh_patente"></td>
+        <td style="width:25%"><span class="lbl">Marca</span><input type="text" data-f="veh_marca"></td>
+        <td style="width:25%"><span class="lbl">Modelo</span><input type="text" data-f="veh_modelo"></td>
+        <td style="width:25%"><span class="lbl">Color</span><input type="text" data-f="veh_color"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><span class="lbl">N° Chasis</span><input type="text" data-f="veh_chasis"></td>
+        <td colspan="2"><span class="lbl">N° Motor</span><input type="text" data-f="veh_motor"></td>
+      </tr>
+    </table>
+
+    <table class="doc obs-box">
+      <tr>
+        <td><span class="lbl">Observaciones (aclarar toda información o dato que considere relevante: otros sujetos vinculados al hecho, motivo del allanamiento, entre otros.)</span>
+        <textarea data-f="observaciones"></textarea></td>
+      </tr>
+    </table>
+
+    <table class="doc">
+      <colgroup><col style="width:50%"><col style="width:50%"></colgroup>
+      <tr>
+        <td><span class="lbl">Email de contacto</span><input type="text" data-f="email_contacto"></td>
+        <td class="firma-cell">
+          <input type="text" data-f="firma_aclaracion" placeholder="">
+          <div class="firma-line">FIRMA Y ACLARACIÓN</div>
+        </td>
+      </tr>
+    </table>
+
+    <table class="doc registro-interno">
+      <tr><th colspan="3">REGISTRO INTERNO DE PEDIDO DE DEVOLUCIÓN</th></tr>
+      <tr>
+        <td><span class="chk-static"><span class="box"></span> CARGA EN SISTEMA</span></td>
+        <td><span class="chk-static"><span class="box"></span> DERIVADO AL FISCAL CORRESPONDIENTE</span></td>
+        <td><span class="chk-static"><span class="box"></span> DERIVACIÓN A OTRA DEPENDENCIA</span></td>
+      </tr>
+      <tr>
+        <td><span class="chk-static"><span class="box"></span> DEVUELTO</span></td>
+        <td colspan="2"><span class="chk-static"><span class="box"></span> NO SE PUDO IDENTIFICAR ALLANAMIENTO</span></td>
+      </tr>
+    </table>
+
+    <div class="page-footer">Página 2 de 2</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'formulario_restitucion_efectos_v1';
+  const fields = document.querySelectorAll('[data-f]');
+  const statusEl = document.getElementById('status');
+
+  function save(){
+    const data = {};
+    fields.forEach(el=>{
+      const key = el.dataset.f;
+      if(el.type === 'checkbox'){
+        data[key] = el.checked;
+      } else if(el.type === 'radio'){
+        if(el.checked) data[key] = el.value;
+      } else {
+        data[key] = el.value;
+      }
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    statusEl.textContent = 'Guardado ' + new Date().toLocaleTimeString();
+  }
+
+  function load(){
+    let raw;
+    try{ raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ raw = {}; }
+    fields.forEach(el=>{
+      const key = el.dataset.f;
+      if(!(key in raw)) return;
+      if(el.type === 'checkbox'){
+        el.checked = !!raw[key];
+      } else if(el.type === 'radio'){
+        el.checked = (el.value === raw[key]);
+      } else {
+        el.value = raw[key];
+      }
+    });
+  }
+
+  fields.forEach(el=>{
+    el.addEventListener('input', save);
+    el.addEventListener('change', save);
+  });
+
+  load();
+
+  document.getElementById('btnImprimir').addEventListener('click', ()=>window.print());
+
+  document.getElementById('btnNuevo').addEventListener('click', ()=>{
+    if(!confirm('¿Vaciar todos los campos del formulario?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    fields.forEach(el=>{
+      if(el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+      else el.value = '';
+    });
+    statusEl.textContent = 'Formulario vacío';
+  });
+})();
+</script>
+
+</body>
+</html>
