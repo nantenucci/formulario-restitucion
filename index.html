@@ -120,7 +120,9 @@
     border:none;
     outline:none;
     font-family:inherit;
-    font-size:10.5px;
+    font-size:13px;
+    font-weight:700;
+    color:#1a3a6b;
     background:transparent;
     padding:1px 0;
   }
@@ -128,7 +130,7 @@
     resize:none;
     overflow:hidden;
     display:block;
-    line-height:1.3;
+    line-height:1.35;
   }
 
   .note{
@@ -270,23 +272,23 @@
     <table class="doc">
       <colgroup><col style="width:25%"><col style="width:37.5%"><col style="width:37.5%"></colgroup>
       <tr>
-        <td colspan="2"><span class="lbl">Nombre y apellido del solicitante</span><input type="text" data-f="nombre"></td>
-        <td><span class="lbl">N° de trámite (interno)</span><input type="text" data-f="tramite"></td>
+        <td colspan="2"><span class="lbl">Nombre y apellido del solicitante</span><textarea class="autogrow" rows="1" data-f="nombre"></textarea></td>
+        <td><span class="lbl">N° de trámite (interno)</span><textarea class="autogrow" rows="1" data-f="tramite"></textarea></td>
       </tr>
       <tr>
-        <td colspan="2"><span class="lbl">D.N.I. N.°</span><input type="text" data-f="dni"></td>
-        <td><span class="lbl">Fiscal</span><input type="text" data-f="fiscal"></td>
+        <td colspan="2"><span class="lbl">D.N.I. N.°</span><textarea class="autogrow" rows="1" data-f="dni"></textarea></td>
+        <td><span class="lbl">Fiscal</span><textarea class="autogrow" rows="1" data-f="fiscal"></textarea></td>
       </tr>
       <tr>
-        <td colspan="3"><span class="lbl">C.U.I.J.</span><input type="text" data-f="cuij"></td>
+        <td colspan="3"><span class="lbl">C.U.I.J.</span><textarea class="autogrow" rows="1" data-f="cuij"></textarea></td>
       </tr>
       <tr>
         <td rowspan="2" style="text-align:center;vertical-align:middle;"><span class="lbl-center">Datos para<br>contactarnos</span></td>
-        <td><span class="lbl">Mail</span><input type="text" data-f="mail"></td>
-        <td><span class="lbl">Tel</span><input type="text" data-f="tel"></td>
+        <td><span class="lbl">Mail</span><textarea class="autogrow" rows="1" data-f="mail"></textarea></td>
+        <td><span class="lbl">Tel</span><textarea class="autogrow" rows="1" data-f="tel"></textarea></td>
       </tr>
       <tr>
-        <td colspan="2"><span class="lbl">Whatsapp</span><input type="text" data-f="whatsapp"></td>
+        <td colspan="2"><span class="lbl">Whatsapp</span><textarea class="autogrow" rows="1" data-f="whatsapp"></textarea></td>
       </tr>
       <tr>
         <td><span class="lbl">Fecha del secuestro</span><input type="date" data-f="fechaSecuestro"></td>
@@ -310,16 +312,16 @@
         </td>
         <td>
           <div class="subblock">
-            <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="cel1_marca"></div>
-            <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="cel1_modelo"></div>
-            <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="cel1_imei"></div>
-            <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="cel1_color"></div>
+            <div class="subrow"><span class="lbl">Marca:</span><textarea class="autogrow" rows="1" data-f="cel1_marca"></textarea></div>
+            <div class="subrow"><span class="lbl">Modelo:</span><textarea class="autogrow" rows="1" data-f="cel1_modelo"></textarea></div>
+            <div class="subrow"><span class="lbl">Imei:</span><textarea class="autogrow" rows="1" data-f="cel1_imei"></textarea></div>
+            <div class="subrow"><span class="lbl">Color-Funda:</span><textarea class="autogrow" rows="1" data-f="cel1_color"></textarea></div>
           </div>
           <div class="subblock">
-            <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="cel2_marca"></div>
-            <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="cel2_modelo"></div>
-            <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="cel2_imei"></div>
-            <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="cel2_color"></div>
+            <div class="subrow"><span class="lbl">Marca:</span><textarea class="autogrow" rows="1" data-f="cel2_marca"></textarea></div>
+            <div class="subrow"><span class="lbl">Modelo:</span><textarea class="autogrow" rows="1" data-f="cel2_modelo"></textarea></div>
+            <div class="subrow"><span class="lbl">Imei:</span><textarea class="autogrow" rows="1" data-f="cel2_imei"></textarea></div>
+            <div class="subrow"><span class="lbl">Color-Funda:</span><textarea class="autogrow" rows="1" data-f="cel2_color"></textarea></div>
           </div>
         </td>
         <td class="pedido-col">
@@ -335,10 +337,10 @@
           <strong>Tablet</strong>
         </td>
         <td>
-          <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="tab_marca"></div>
-          <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="tab_modelo"></div>
-          <div class="subrow"><span class="lbl">Imei:</span><input type="text" data-f="tab_imei"></div>
-          <div class="subrow"><span class="lbl">Color-Funda:</span><input type="text" data-f="tab_color"></div>
+          <div class="subrow"><span class="lbl">Marca:</span><textarea class="autogrow" rows="1" data-f="tab_marca"></textarea></div>
+          <div class="subrow"><span class="lbl">Modelo:</span><textarea class="autogrow" rows="1" data-f="tab_modelo"></textarea></div>
+          <div class="subrow"><span class="lbl">Imei:</span><textarea class="autogrow" rows="1" data-f="tab_imei"></textarea></div>
+          <div class="subrow"><span class="lbl">Color-Funda:</span><textarea class="autogrow" rows="1" data-f="tab_color"></textarea></div>
         </td>
         <td class="pedido-col">
           <label class="chk"><input type="radio" name="car_tab" data-f="car_tablet" value="Propietario"><span class="box"></span> Propietario</label>
@@ -353,9 +355,9 @@
           <strong>Computadoras / Notebook</strong>
         </td>
         <td>
-          <div class="subrow"><span class="lbl">Marca:</span><input type="text" data-f="pc_marca"></div>
-          <div class="subrow"><span class="lbl">Modelo:</span><input type="text" data-f="pc_modelo"></div>
-          <div class="subrow"><span class="lbl">Color:</span><input type="text" data-f="pc_color"></div>
+          <div class="subrow"><span class="lbl">Marca:</span><textarea class="autogrow" rows="1" data-f="pc_marca"></textarea></div>
+          <div class="subrow"><span class="lbl">Modelo:</span><textarea class="autogrow" rows="1" data-f="pc_modelo"></textarea></div>
+          <div class="subrow"><span class="lbl">Color:</span><textarea class="autogrow" rows="1" data-f="pc_color"></textarea></div>
         </td>
         <td class="pedido-col">
           <label class="chk"><input type="radio" name="car_pc" data-f="car_pc" value="Propietario"><span class="box"></span> Propietario</label>
@@ -370,7 +372,7 @@
           <strong>Dinero</strong>
         </td>
         <td>
-          <div class="subrow"><span class="lbl">Cantidad:</span><input type="text" data-f="dinero_cantidad"></div>
+          <div class="subrow"><span class="lbl">Cantidad:</span><textarea class="autogrow" rows="1" data-f="dinero_cantidad"></textarea></div>
         </td>
         <td class="pedido-col">
           <label class="chk"><input type="radio" name="car_dinero" data-f="car_dinero" value="Propietario"><span class="box"></span> Propietario</label>
@@ -431,14 +433,14 @@
         </td>
       </tr>
       <tr>
-        <td style="width:25%"><span class="lbl">Patente</span><input type="text" data-f="veh_patente"></td>
-        <td style="width:25%"><span class="lbl">Marca</span><input type="text" data-f="veh_marca"></td>
-        <td style="width:25%"><span class="lbl">Modelo</span><input type="text" data-f="veh_modelo"></td>
-        <td style="width:25%"><span class="lbl">Color</span><input type="text" data-f="veh_color"></td>
+        <td style="width:25%"><span class="lbl">Patente</span><textarea class="autogrow" rows="1" data-f="veh_patente"></textarea></td>
+        <td style="width:25%"><span class="lbl">Marca</span><textarea class="autogrow" rows="1" data-f="veh_marca"></textarea></td>
+        <td style="width:25%"><span class="lbl">Modelo</span><textarea class="autogrow" rows="1" data-f="veh_modelo"></textarea></td>
+        <td style="width:25%"><span class="lbl">Color</span><textarea class="autogrow" rows="1" data-f="veh_color"></textarea></td>
       </tr>
       <tr>
-        <td colspan="2"><span class="lbl">N° Chasis</span><input type="text" data-f="veh_chasis"></td>
-        <td colspan="2"><span class="lbl">N° Motor</span><input type="text" data-f="veh_motor"></td>
+        <td colspan="2"><span class="lbl">N° Chasis</span><textarea class="autogrow" rows="1" data-f="veh_chasis"></textarea></td>
+        <td colspan="2"><span class="lbl">N° Motor</span><textarea class="autogrow" rows="1" data-f="veh_motor"></textarea></td>
       </tr>
     </table>
 
@@ -452,7 +454,7 @@
     <table class="doc">
       <colgroup><col style="width:50%"><col style="width:50%"></colgroup>
       <tr>
-        <td><span class="lbl">Email de contacto</span><input type="text" data-f="email_contacto"></td>
+        <td><span class="lbl">Email de contacto</span><textarea class="autogrow" rows="1" data-f="email_contacto"></textarea></td>
         <td class="firma-cell">
           <input type="text" data-f="firma_aclaracion" placeholder="">
           <div class="firma-line">FIRMA Y ACLARACIÓN</div>
